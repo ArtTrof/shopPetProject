@@ -1,5 +1,5 @@
-import axios from "axios";
 import * as React from "react";
+import { customerService } from "../services/customer";
 
 function App() {
 
@@ -7,18 +7,13 @@ function App() {
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
+  const [reqRes, setReqRes] = React.useState("");
 
   const onRegisterSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:9090/signup", {
-      email,
-      password,
-      firstName,
-      lastName
-    });
-    console.log(response);
-
+    customerService.signup(email, password, firstName, lastName)
+      .then(() => setReqRes("Successfully registered!"))
+      .catch(() => setReqRes("Failed to register!"));
   }
 
   return (
@@ -41,6 +36,7 @@ function App() {
           <input type="password" value={password} onInput={(e: React.FormEvent<HTMLInputElement>) => {setPassword((e.target as HTMLInputElement).value)}} />
         </div>
         <button onClick={onRegisterSubmit}>Register</button>
+        <p>{reqRes}</p>
     </>
   );
 }
