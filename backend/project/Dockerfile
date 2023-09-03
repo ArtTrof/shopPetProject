@@ -1,7 +1,7 @@
 FROM maven:3.8.3-openjdk-17 as builder
 WORKDIR /project
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN #mvn dependency:go-offline
 COPY . .
 RUN mvn install
 FROM openjdk:17-alpine
