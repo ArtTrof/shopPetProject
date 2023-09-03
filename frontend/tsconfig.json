@@ -5,6 +5,7 @@
     "experimentalDecorators": true,
     "module": "esNext",
     "moduleResolution": "node",
+    "jsx": "react-jsx",
     "rootDirs": [
       "src"
     ],

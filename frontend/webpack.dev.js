@@ -13,6 +13,6 @@ module.exports = merge(common, {
       overlay: false,
     },
     hot: true,
-    port: 5555,
+    port: 8080,
   },
 });
