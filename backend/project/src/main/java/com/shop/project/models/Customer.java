@@ -1,16 +1,22 @@
 package com.shop.project.models;
 
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
     @Id
     @Column(name = "id")
@@ -37,5 +43,7 @@ public class Customer {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
+    @OneToOne
+    @JoinColumn(name="role_id")
+    private Role role;
 }
