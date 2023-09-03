@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin
 public class CustomerController {
     @Autowired
     private final CustomerService service;
