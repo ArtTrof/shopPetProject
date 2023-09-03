@@ -64,7 +64,7 @@ public class CustomerService implements UserDetailsService {
     @Transactional
     public CustomerDTO saveNewCustomer(Customer customer) {
         String email = customer.getEmail();
-        if(isEmailUnique(email)){
+        if (isEmailUnique(email)) {
             throw new ThrownException("User with such email already exists");
         }
         Customer customerToSave = Customer.builder()
@@ -74,6 +74,7 @@ public class CustomerService implements UserDetailsService {
                 .phone(customer.getPhone())
                 .createdAt(LocalDateTime.now())
                 .role(roleRepo.findRoleById(Long.valueOf(1)).get())
+                .password(passwordEncoder.encode(customer.getPassword()))
                 .build();
         customerRepo.save(customerToSave);
         return null;
@@ -86,6 +87,7 @@ public class CustomerService implements UserDetailsService {
 
         }
     }
+
     public boolean isEmailUnique(String email) {
         return customerRepo.findByEmail(email).isPresent();
     }
