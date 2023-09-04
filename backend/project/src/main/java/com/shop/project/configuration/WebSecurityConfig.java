@@ -3,7 +3,9 @@ package com.shop.project.configuration;
 import com.shop.project.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,21 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-//    @Bean
-//    public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
-//        http
-//                .cors().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .formLogin().disable()
-//                .matc("/**")
-//                .authorizeHttpRequests(registry -> registry
-//                        .requestMatchers("/**").permitAll()
-//                        .anyRequest().authenticated());
-//        return http.build();
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customerDetailsService).passwordEncoder(passwordEncoder);
@@ -51,10 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-//                .authorizeHttpRequests().anyRequest().authenticated()
-//                .and()
                 .authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated();
-//                .and()
-//                .httpBasic().authenticationEntryPoint().;
     }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 }

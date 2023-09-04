@@ -1,6 +1,6 @@
 package com.shop.project.service;
 
-import com.shop.project.dto.CustomerDTO;
+import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.repository.CustomerRepo;
 import com.shop.project.repository.RoleRepo;
@@ -28,11 +28,17 @@ public class CustomerService implements UserDetailsService {
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public CustomerService(CustomerRepo customerRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+        this.customerRepo = customerRepo;
+        this.roleRepo = roleRepo;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Customer customer = customerRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
         return new User(customer.getEmail(), customer.getPassword(), getGrantedAuthority(customer));
     }
 
@@ -45,12 +51,6 @@ public class CustomerService implements UserDetailsService {
         return authorities;
     }
 
-    @Autowired
-    public CustomerService(CustomerRepo customerRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
-        this.customerRepo = customerRepo;
-        this.roleRepo = roleRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public List<Customer> getCustomers() {
         return customerRepo.findAll();

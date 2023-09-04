@@ -1,4 +1,4 @@
-package com.shop.project.dto;
+package com.shop.project.dto.customer;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.shop.project.dto;
+package com.shop.project.dto.customer;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerLoginDTO {
+public class CustomerRegistrationDTO {
     @NotBlank(message = "First name is required")
     private String firstName;
     @NotBlank(message = "Last name is required")

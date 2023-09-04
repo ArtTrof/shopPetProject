@@ -1,6 +1,6 @@
 package com.shop.project.controllers;
 
-import com.shop.project.dto.CustomerDTO;
+import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.service.CustomerService;
 import lombok.RequiredArgsConstructor;
