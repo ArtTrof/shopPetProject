@@ -1,6 +1,9 @@
 package com.shop.project.dto.customer;
 
+import com.shop.project.models.Role;
 import lombok.*;
+
+import java.util.Set;
 
 
 @Getter
@@ -15,5 +18,5 @@ public class CustomerDTO {
     private String phone;
     private String password;
     private String email;
-    private String role;
+    private Set<String> roles;
 }

@@ -31,7 +31,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .version("1.0.0")
                 .license("Apache 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0.html")
-                .contact(new Contact("Project interface", "https:pornhub.com", "google@google.com"))
+                .contact(new Contact("Project interface", "google.com", "google@google.com"))
                 .build();
     }
 

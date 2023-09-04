@@ -4,11 +4,8 @@ package com.shop.project.models;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -43,7 +40,8 @@ public class Customer {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @OneToOne
-    @JoinColumn(name="role_id")
-    private Role role;
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }

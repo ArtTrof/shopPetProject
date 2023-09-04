@@ -2,8 +2,8 @@ package com.shop.project.service;
 
 import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.models.Customer;
+import com.shop.project.models.Role;
 import com.shop.project.repository.CustomerRepo;
-import com.shop.project.repository.RoleRepo;
 import com.shop.project.util.ThrownException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,21 +17,16 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CustomerService implements UserDetailsService {
     private final CustomerRepo customerRepo;
-    private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomerService(CustomerRepo customerRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
+    public CustomerService(CustomerRepo customerRepo, PasswordEncoder passwordEncoder) {
         this.customerRepo = customerRepo;
-        this.roleRepo = roleRepo;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,10 +39,10 @@ public class CustomerService implements UserDetailsService {
 
     private Collection<GrantedAuthority> getGrantedAuthority(Customer customer) {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        if (customer.getRole().getRoleName().equalsIgnoreCase("admin")) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        Set<Role> roles = customer.getRoles();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
         }
-        authorities.add(new SimpleGrantedAuthority("USER"));
         return authorities;
     }
 
@@ -73,7 +68,7 @@ public class CustomerService implements UserDetailsService {
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
                 .createdAt(LocalDateTime.now())
-                .role(roleRepo.findRoleById(Long.valueOf(1)).get())
+                .roles(Set.of(Role.USER))
                 .password(passwordEncoder.encode(customer.getPassword()))
                 .build();
         customerRepo.save(customerToSave);

@@ -28,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customerDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(customerDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -38,7 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-                .authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated()
+                .and()
+                .logout().permitAll();
     }
 
     @Bean
