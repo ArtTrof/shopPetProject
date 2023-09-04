@@ -1,8 +1,6 @@
 import * as React from "react";
 import { customerService } from "../services/customer";
 
-import * as MUI from '@mui/material'
-
 import Header from "./Header";
 
 export default () =>  {
@@ -23,9 +21,8 @@ export default () =>  {
   return (
     <>
     <Header />
-    <MUI.Grid container spacing={2}>
-      <MUI.Grid xs={10} item={true}>
-        <h1>ReGistRRRRRati0n</h1>
+
+    <h1>ReGistRRRRRati0n</h1>
         <div>
           <p>EMAIL</p>
           <input type="email" value={email} onInput={(e: React.FormEvent<HTMLInputElement>) => {setEmail((e.target as HTMLInputElement).value)}} />
@@ -44,8 +41,6 @@ export default () =>  {
         </div>
         <button onClick={onRegisterSubmit}>Register</button>
         <p>{reqRes}</p>
-      </MUI.Grid>
-    </MUI.Grid>
     </>
   );
 };
