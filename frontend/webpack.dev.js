@@ -14,5 +14,6 @@ module.exports = merge(common, {
     },
     hot: true,
     port: 8080,
+    liveReload: true,
   },
 });

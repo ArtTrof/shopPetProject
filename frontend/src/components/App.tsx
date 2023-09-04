@@ -1,7 +1,11 @@
 import * as React from "react";
 import { customerService } from "../services/customer";
 
-function App() {
+import * as MUI from '@mui/material'
+
+import Header from "./Header";
+
+export default () =>  {
 
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -18,6 +22,9 @@ function App() {
 
   return (
     <>
+    <Header />
+    <MUI.Grid container spacing={2}>
+      <MUI.Grid xs={10} item={true}>
         <h1>ReGistRRRRRati0n</h1>
         <div>
           <p>EMAIL</p>
@@ -37,8 +44,8 @@ function App() {
         </div>
         <button onClick={onRegisterSubmit}>Register</button>
         <p>{reqRes}</p>
+      </MUI.Grid>
+    </MUI.Grid>
     </>
   );
-}
-
-export default App;
+};
