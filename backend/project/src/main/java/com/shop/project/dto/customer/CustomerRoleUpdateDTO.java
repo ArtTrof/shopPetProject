@@ -3,20 +3,15 @@ package com.shop.project.dto.customer;
 import com.shop.project.models.Role;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
-
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDTO {
-    private long id;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private String password;
-    private String email;
+public class CustomerRoleUpdateDTO {
+    @NotBlank
     private Set<Role> roles;
 }

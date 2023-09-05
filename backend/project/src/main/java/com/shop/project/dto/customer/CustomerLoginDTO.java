@@ -1,6 +1,7 @@
 package com.shop.project.dto.customer;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,8 +13,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CustomerLoginDTO {
     @Email
-    @NotBlank
+    @NotBlank(message = "email required")
+    @Email(message = "Invalid email format")
     private String email;
-    @NotBlank
+    @NotBlank(message = "Password can't be blank")
+    @Length(min = 8, message = "Password should contain at least 8 characters")
     private String password;
 }
