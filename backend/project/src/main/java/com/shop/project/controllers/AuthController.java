@@ -9,14 +9,12 @@ import com.shop.project.util.validators.CustomerValidator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +35,8 @@ public class AuthController {
     private AuthenticationManager manager;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody @Validated CustomerRegistrationDTO customerDTO, BindingResult bindingResult) {
+    public ResponseEntity<String> signUp(@RequestBody @Validated CustomerRegistrationDTO customerDTO,
+                                         BindingResult bindingResult) {
         var customer = mapCustomerFromDTO(customerDTO);
         validator.validate(customer, bindingResult);
         if (bindingResult.hasErrors())
@@ -52,8 +51,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Validated CustomerLoginDTO customerDTO,
-                                        BindingResult bindingResult,
-                                        @RequestParam(value = "error", required = false) String error) {
+                                        BindingResult bindingResult
+    ) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
         }

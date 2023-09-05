@@ -1,6 +1,7 @@
 package com.shop.project.service;
 
 import com.shop.project.dto.customer.CustomerDTO;
+import com.shop.project.dto.customer.CustomerUpdateDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.models.Role;
 import com.shop.project.repository.CustomerRepo;
@@ -76,14 +77,30 @@ public class CustomerService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateCustomer(Long id, String email, String phone, String password) {
-        var customer = customerRepo.findCustomerById(id);
-        if (customer.isPresent()) {
-
-        }
+    public void updateCustomer(Long id, CustomerUpdateDTO dto) {
+        Customer customer = customerRepo.findCustomerById(id).get();
+        if (dto.getEmail() != null && !customer.getEmail().equals(dto.getEmail()))
+            customer.setEmail(dto.getEmail());
+        if (dto.getPassword() != null)
+            customer.setPassword(passwordEncoder.encode(dto.getPassword()));
+        if (dto.getFirstName() != null)
+            customer.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null)
+            customer.setLastName(dto.getLastName());
+        if (dto.getPhone() != null)
+            customer.setPhone(dto.getPhone());
+        customerRepo.save(customer);
     }
 
     public boolean isEmailUnique(String email) {
         return customerRepo.findByEmail(email).isPresent();
+    }
+
+    @Transactional
+    public void updateCustomerRole(Long id, Set<Role> roles) {
+        Customer customer = customerRepo.findCustomerById(id).get();
+        customer.getRoles().clear();
+        customer.setRoles(roles);
+        customerRepo.save(customer);
     }
 }
