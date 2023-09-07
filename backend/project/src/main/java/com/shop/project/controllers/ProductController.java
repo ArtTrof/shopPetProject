@@ -66,7 +66,10 @@ public class ProductController {
     public ResponseEntity<ProductFullDTO> getOne(@PathVariable Long id) {
         try {
             var product = productService.findById(id);
-            return ResponseEntity.ok().body(mapToProductFullDTO(product));
+            var dto = mapToProductFullDTO(product);
+            dto.setCategory(product.getCategory().getName());
+            dto.setProducer(product.getProducer().getName());
+            return ResponseEntity.ok().body(dto);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
