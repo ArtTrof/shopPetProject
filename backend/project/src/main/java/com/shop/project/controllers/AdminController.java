@@ -1,17 +1,16 @@
 package com.shop.project.controllers;
 
 import com.shop.project.dto.customer.CustomerDTO;
-import com.shop.project.dto.customer.CustomerRoleUpdateDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,9 +25,7 @@ public class AdminController {
     //    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users")
     public List<CustomerDTO> getAll() {
-        return service.getCustomers().stream()
-                .map(this::mapCustomerToDTO)
-                .collect(Collectors.toList());
+        return service.getCustomers();
     }
 
     //    @PreAuthorize("hasAuthority('ADMIN')")
@@ -42,12 +39,14 @@ public class AdminController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<String> updateCustomerRole(@PathVariable Long id, @RequestBody CustomerRoleUpdateDTO dto) {
-        service.updateCustomerRole(id, dto.getRoles());
+    public ResponseEntity<String> updateCustomerRole(@PathVariable Long id, @RequestParam String role) {
+        service.updateCustomerRole(id, role);
         return ResponseEntity.ok().build();
     }
 
     private CustomerDTO mapCustomerToDTO(Customer customer) {
-        return mapper.map(customer, CustomerDTO.class);
+        var res = mapper.map(customer, CustomerDTO.class);
+        res.setRoles(customer.getRoles().iterator().next().toString());
+        return res;
     }
 }

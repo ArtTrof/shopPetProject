@@ -48,8 +48,19 @@ public class CustomerService implements UserDetailsService {
     }
 
 
-    public List<Customer> getCustomers() {
-        return customerRepo.findAll();
+    public List<CustomerDTO> getCustomers() {
+        var customers = customerRepo.findAll();
+        List<CustomerDTO> dtos = new ArrayList<>();
+        for (Customer customer : customers) {
+            dtos.add(new CustomerDTO(customer.getId(),
+                    customer.getFirstName(),
+                    customer.getLastName(),
+                    customer.getPhone(),
+                    customer.getEmail(),
+                    customer.getRoles().iterator().next().toString()
+            ));
+        }
+        return dtos;
     }
 
     public Customer getCustomerById(Long id) {
@@ -79,7 +90,7 @@ public class CustomerService implements UserDetailsService {
     @Transactional
     public void updateCustomer(Long id, CustomerUpdateDTO dto) {
         Customer customer = customerRepo.findCustomerById(id).get();
-        if (dto.getEmail() != null && !customer.getEmail().equals(dto.getEmail()))
+        if (dto.getEmail() != null && !customer.getEmail().equals(dto.getEmail()) && isEmailUnique(dto.getEmail()))
             customer.setEmail(dto.getEmail());
         if (dto.getPassword() != null)
             customer.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -97,10 +108,16 @@ public class CustomerService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateCustomerRole(Long id, Set<Role> roles) {
+    public void updateCustomerRole(Long id, String role) {
         Customer customer = customerRepo.findCustomerById(id).get();
         customer.getRoles().clear();
-        customer.setRoles(roles);
+        if (role.equalsIgnoreCase("ADMIN")) {
+            customer.setRoles(Set.of(Role.ADMIN));
+        } else if (role.equalsIgnoreCase("USER")) {
+            customer.setRoles(Set.of(Role.USER));
+        } else {
+            customer.setRoles(Set.of(Role.USER));
+        }
         customerRepo.save(customer);
     }
 }
