@@ -43,14 +43,8 @@ public class CustomerController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
         }
-        try {
-            service.updateCustomer(id, dto);
-            return ResponseEntity.ok("Customer was updated");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(String.format(e.getMessage() + ",CODE: 400"));
-        }
+        return service.updateCustomer(id, dto);
     }
-
 
     private CustomerDTO mapCustomerToDTO(Customer customer) {
         var res = mapper.map(customer, CustomerDTO.class);

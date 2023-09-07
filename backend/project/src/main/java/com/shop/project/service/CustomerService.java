@@ -7,6 +7,7 @@ import com.shop.project.models.Role;
 import com.shop.project.repository.CustomerRepo;
 import com.shop.project.util.ThrownException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -88,19 +89,24 @@ public class CustomerService implements UserDetailsService {
     }
 
     @Transactional
-    public void updateCustomer(Long id, CustomerUpdateDTO dto) {
-        Customer customer = customerRepo.findCustomerById(id).get();
-        if (dto.getEmail() != null && !customer.getEmail().equals(dto.getEmail()) && isEmailUnique(dto.getEmail()))
-            customer.setEmail(dto.getEmail());
-        if (dto.getPassword() != null)
-            customer.setPassword(passwordEncoder.encode(dto.getPassword()));
-        if (dto.getFirstName() != null)
-            customer.setFirstName(dto.getFirstName());
-        if (dto.getLastName() != null)
-            customer.setLastName(dto.getLastName());
-        if (dto.getPhone() != null)
-            customer.setPhone(dto.getPhone());
-        customerRepo.save(customer);
+    public ResponseEntity<String> updateCustomer(Long id, CustomerUpdateDTO dto) {
+        if (customerRepo.findCustomerById(id).isPresent()) {
+            Customer customer = customerRepo.findCustomerById(id).get();
+            if (dto.getEmail().isPresent() && !customer.getEmail().equals(dto.getEmail().get()) && isEmailUnique(dto.getEmail().get()))
+                customer.setEmail(dto.getEmail().get());
+            if (dto.getPassword().isPresent())
+                customer.setPassword(passwordEncoder.encode(dto.getPassword().get()));
+            if (dto.getFirstName().isPresent())
+                customer.setFirstName(dto.getFirstName().get());
+            if (dto.getLastName().isPresent())
+                customer.setLastName(dto.getLastName().get());
+            if (dto.getPhone().isPresent())
+                customer.setPhone(dto.getPhone().get());
+            customerRepo.save(customer);
+            return ResponseEntity.ok("Customer was updated");
+        } else {
+            return ResponseEntity.badRequest().body(String.format("No customer with id %s found", id));
+        }
     }
 
     public boolean isEmailUnique(String email) {
