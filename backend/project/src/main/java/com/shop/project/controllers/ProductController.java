@@ -1,8 +1,8 @@
 package com.shop.project.controllers;
 
 import com.shop.project.dto.product.ProductFullDTO;
+import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Product;
-import com.shop.project.repository.ProductRepo;
 import com.shop.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.shop.project.util.validators.ValidationErrorResponse.getValidationErrors;
 
 @RestController
 @CrossOrigin
@@ -23,8 +26,6 @@ import java.util.stream.Collectors;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private ProductRepo productRepo;
     @Autowired
     private ModelMapper mapper;
 
@@ -46,6 +47,7 @@ public class ProductController {
                     .isAvailable(isAvailable)
                     .shortDescription(shortDescription)
                     .longDescription(longDescription)
+                    .quantity(quantity)
                     .build();
             productService.saveProduct(product, image, category, producer);
             return ResponseEntity.ok("Product registered successfully");
@@ -60,11 +62,40 @@ public class ProductController {
         return ResponseEntity.ok().body(products);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductFullDTO> getOne(@PathVariable Long id) {
+        try {
+            var product = productService.findById(id);
+            return ResponseEntity.ok().body(mapToProductFullDTO(product));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
     @GetMapping("/getImage/{id}")
-    public ResponseEntity<byte[]> getAllV2(@PathVariable Long id) {
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
         var dto = productService.getProductImage(id);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(dto.getContentType()));
         return ResponseEntity.ok().headers(headers).body(dto.getImage());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
+        return productService.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateProductById(@PathVariable Long id,
+                                                    @RequestBody @Valid ProductToUpdateDTO dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
+        }
+        return productService.updateProductById(id, dto);
+    }
+
+    public ProductFullDTO mapToProductFullDTO(Product product) {
+        return mapper.map(product, ProductFullDTO.class);
     }
 }

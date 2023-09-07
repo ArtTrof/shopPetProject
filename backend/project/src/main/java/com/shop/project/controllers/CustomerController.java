@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +18,14 @@ import static com.shop.project.util.validators.ValidationErrorResponse.getValida
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
+@RequestMapping("/customer")
 public class CustomerController {
     @Autowired
     private final CustomerService service;
     @Autowired
     private final ModelMapper mapper;
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
         Customer customer = service.getCustomerById(id);
         if (customer != null) {
@@ -34,7 +34,7 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updateCustomer(
 //            @AuthenticationPrincipal Customer customer,
             @PathVariable Long id,
@@ -53,7 +53,9 @@ public class CustomerController {
 
 
     private CustomerDTO mapCustomerToDTO(Customer customer) {
-        return mapper.map(customer, CustomerDTO.class);
+        var res = mapper.map(customer, CustomerDTO.class);
+        res.setRoles(customer.getRoles().iterator().next().toString());
+        return res;
     }
 
     private Customer mapCustomerFromDTO(CustomerDTO customerDTO) {
