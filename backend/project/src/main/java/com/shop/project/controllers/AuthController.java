@@ -59,6 +59,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(String.format(e.getMessage() + ",CODE: 400"));
         }
     }
+
     @Operation(summary = "Login", description = "Login for customer")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success login"),

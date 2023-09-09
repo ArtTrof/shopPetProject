@@ -68,8 +68,4 @@ public class CustomerController {
         res.setRoles(customer.getRoles().iterator().next().toString());
         return res;
     }
-
-    private Customer mapCustomerFromDTO(CustomerDTO customerDTO) {
-        return mapper.map(customerDTO, Customer.class);
-    }
 }
