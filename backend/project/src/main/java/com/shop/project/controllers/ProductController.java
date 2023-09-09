@@ -40,6 +40,7 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ModelMapper mapper;
+
     @Operation(summary = "Save product", description = "Save new product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success save"),
@@ -47,14 +48,14 @@ public class ProductController {
     })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/new")
     public ResponseEntity<String> saveNewProduct(@RequestParam("image") MultipartFile image,
-                                       @RequestParam("name") String name,
-                                       @RequestParam("shortDescription") String shortDescription,
-                                       @RequestParam("longDescription") String longDescription,
-                                       @RequestParam("price") double price,
-                                       @RequestParam("isAvailable") boolean isAvailable,
-                                       @RequestParam("quantity") int quantity,
-                                       @RequestParam("categoryName") String category,
-                                       @RequestParam("producerName") String producer
+                                                 @RequestParam("name") String name,
+                                                 @RequestParam("shortDescription") String shortDescription,
+                                                 @RequestParam("longDescription") String longDescription,
+                                                 @RequestParam("price") double price,
+                                                 @RequestParam("isAvailable") boolean isAvailable,
+                                                 @RequestParam("quantity") int quantity,
+                                                 @RequestParam("categoryName") String category,
+                                                 @RequestParam("producerName") String producer
     ) {
         try {
             Product product = Product.builder()
@@ -71,16 +72,19 @@ public class ProductController {
             return ResponseEntity.badRequest().body(String.format(e.getMessage() + ",CODE: 400"));
         }
     }
+
     @Operation(summary = "Get list of all products", description = "Get all products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Products found")
     })
     @GetMapping("/getAll")
     public ResponseEntity<List<ProductFullDTO>> getAll(
+            @RequestParam(name = "productName", required = false) String productName,
             @RequestParam(name = "categoryName", required = false) String categoryName,
-            @RequestParam(name = "productName", required = false) String productName) {
-        return productService.getAll(categoryName, productName);
+            @RequestParam(name = "producerName", required = false) String producerName) {
+        return productService.getAll(productName, categoryName, producerName);
     }
+
     @Operation(summary = "Get product", description = "Get product by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product found"),
@@ -98,6 +102,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @Operation(summary = "Get product image", description = "Get product image by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product image found")
@@ -109,6 +114,7 @@ public class ProductController {
         headers.setContentType(MediaType.valueOf(dto.getContentType()));
         return ResponseEntity.ok().headers(headers).body(dto.getImage());
     }
+
     @Operation(summary = "Delete product", description = "Delete product with id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product deleted")

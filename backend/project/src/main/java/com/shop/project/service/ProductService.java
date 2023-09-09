@@ -3,6 +3,7 @@ package com.shop.project.service;
 import com.shop.project.dto.product.ProductFullDTO;
 import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Category;
+import com.shop.project.models.Producer;
 import com.shop.project.models.Product;
 import com.shop.project.repository.CategoryRepo;
 import com.shop.project.repository.ProducerRepo;
@@ -52,25 +53,43 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<List<ProductFullDTO>> getAll(String categoryName, String productName) {
-        if (categoryName != null && !categoryName.isEmpty()) {
-            Optional<Category> category = categoryRepo.findCategoryByName(categoryName);
+    public ResponseEntity<List<ProductFullDTO>> getAll(String productName, String categoryName, String producerName) {
+        Optional<Producer> producer = Optional.empty();
+        Optional<Category> category = Optional.empty();
+        Optional<List<Product>> productList = Optional.empty();
+        if (categoryName != null) {
+            category = categoryRepo.findCategoryByName(categoryName);
             if (category.isEmpty()) {
                 return ResponseEntity.badRequest().build();
-            } else {
-                Optional<List<Product>> productsWithCategory = productRepo.findProductByCategory(category.get());
-                return productsWithCategory.map(products -> ResponseEntity.ok().body(parseListOfProductToFullDTO(products))).orElseGet(() -> ResponseEntity.badRequest().build());
             }
-        } else if (productName != null && !productName.isEmpty()) {
-            Optional<List<Product>> products = productRepo.findProductByNameStartsWith(productName);
-            if (products.get().isEmpty()) {
+        }
+        if (producerName != null) {
+            producer = producerRepo.findProducerByName(producerName);
+            if (producer.isEmpty()) {
                 return ResponseEntity.badRequest().build();
-            } else {
-                return ResponseEntity.ok().body(parseListOfProductToFullDTO(products.get()));
             }
+        }
+        if (productName != null && categoryName != null && producerName != null) {
+            productList = productRepo.findProductsByNameIgnoreCaseStartingWithAndCategoryAndProducer(productName, category.get(), producer.get());
+        } else if (productName != null && categoryName != null) {
+            productList = productRepo.findProductsByNameIgnoreCaseStartingWithAndCategory(productName, category.get());
+        } else if (productName != null && producerName != null) {
+            productList = productRepo.findProductsByNameIgnoreCaseStartingWithAndProducer(productName, producer.get());
+        } else if (categoryName != null && producerName != null) {
+            productList = productRepo.findProductByCategoryAndProducer(category.get(), producer.get());
+        } else if (producerName != null) {
+            productList = productRepo.findProductsByProducer(producer.get());
+        } else if (categoryName != null) {
+            productList = productRepo.findProductsByCategory(category.get());
+        } else if (productName != null) {
+            productList = productRepo.findProductsByNameIgnoreCaseStartingWith(productName);
         } else {
-            List<Product> products = productRepo.findAll();
-            return ResponseEntity.ok().body(parseListOfProductToFullDTO(products));
+            productList = Optional.of(productRepo.findAll());
+        }
+        if (productList.isPresent() && !productList.get().isEmpty()) {
+            return ResponseEntity.ok().body(parseListOfProductToFullDTO(productList.get()));
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -131,7 +150,7 @@ public class ProductService {
                 if (producerRepo.findProducerByName(dto.getProducer().get()).isPresent()) {
                     product.setProducer(producerRepo.findProducerByName(dto.getProducer().get()).get());
                 } else {
-                    return ResponseEntity.badRequest().body(String.format("No producer found with name %s", dto.getCategory().get()));
+                    return ResponseEntity.badRequest().body(String.format("No producer found with name %s", dto.getProducer().get()));
                 }
             }
             productRepo.save(product);
