@@ -5,7 +5,7 @@ import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.models.Role;
 import com.shop.project.service.CustomerService;
-import factory.CustomerFactory;
+import com.shop.project.util.ThrownException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,17 +15,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import static factory.CustomerFactory.generateCustomer;
 import static factory.CustomerFactory.mapCustomerToDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminControllerUnitTest {
@@ -37,7 +35,7 @@ public class AdminControllerUnitTest {
     private ModelMapper mapper;
 
     @Test
-    public void getAll() {
+    public void testGetAll() {
         //Given
         List<CustomerDTO> customers = List.of(mapCustomerToDTO(generateCustomer()), mapCustomerToDTO(generateCustomer()));
         //When
@@ -47,7 +45,7 @@ public class AdminControllerUnitTest {
     }
 
     @Test
-    public void getCustomerById() {
+    public void testGetCustomerById() {
         //Given
         Customer customer = generateCustomer();
         long id = 1L;
@@ -60,6 +58,36 @@ public class AdminControllerUnitTest {
         ResponseEntity<CustomerDTO> response = adminController.getCustomerById(id);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mappedCustomer, response.getBody());
+    }
+
+    @Test
+    public void testUpdateCustomerId() {
+        //Given
+        Customer customer = generateCustomer();
+        long id = 1;
+        String roles = Set.of(Role.USER).toString();
+        //When
+        doNothing().when(customerService).updateCustomerRole(id, roles);
+        //Act
+        ResponseEntity<String> response = adminController.updateCustomerRole(id, roles);
+        //Then
+        verify(customerService, times(1)).updateCustomerRole(id, roles);
+        assert response.getStatusCode().equals(HttpStatus.OK);
+    }
+
+    @Test
+    public void testUpdateCustomerIdFailure() {
+        //Given
+        long id = 1;
+        String roles = Set.of(Role.USER).toString();
+        //When
+        doThrow(new ThrownException("No customer with such id")).when(customerService).updateCustomerRole(id, roles);
+        //Act
+        ResponseEntity<String> response = adminController.updateCustomerRole(id, roles);
+        //Then
+        verify(customerService, times(1)).updateCustomerRole(id, roles);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertTrue(response.getBody().contains("No customer with such id,CODE:400"));
     }
 
 }
