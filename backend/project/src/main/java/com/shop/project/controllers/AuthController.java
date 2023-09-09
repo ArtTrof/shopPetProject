@@ -6,6 +6,9 @@ import com.shop.project.models.Customer;
 import com.shop.project.service.CustomerService;
 import com.shop.project.util.ThrownException;
 import com.shop.project.util.validators.CustomerValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,11 @@ public class AuthController {
     @Autowired
     private AuthenticationManager manager;
 
+    @Operation(summary = "Sign up", description = "Register customer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success registration"),
+            @ApiResponse(responseCode = "400", description = "Exception")
+    })
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody @Validated CustomerRegistrationDTO customerDTO,
                                          BindingResult bindingResult) {
@@ -51,7 +59,11 @@ public class AuthController {
             return ResponseEntity.badRequest().body(String.format(e.getMessage() + ",CODE: 400"));
         }
     }
-
+    @Operation(summary = "Login", description = "Login for customer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success login"),
+            @ApiResponse(responseCode = "400", description = "Invalid email or password")
+    })
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Validated CustomerLoginDTO customerDTO,
                                         BindingResult bindingResult

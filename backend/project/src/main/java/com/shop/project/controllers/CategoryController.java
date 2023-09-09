@@ -2,6 +2,9 @@ package com.shop.project.controllers;
 
 import com.shop.project.models.Category;
 import com.shop.project.repository.CategoryRepo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,17 +26,27 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     CategoryRepo categoryRepo;
-
+    @Operation(summary = "Get names", description = "Get all category names")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get all category names")
+    })
     @GetMapping("/getAllNames")
     public ResponseEntity<List<String>> getAllNames() {
         return ResponseEntity.ok().body(categoryRepo.findAllNames());
     }
-
+    @Operation(summary = "Get id and names", description = "Get all category id and names")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get all categories")
+    })
     @GetMapping("/getAll")
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok().body(categoryRepo.findAll());
     }
-
+    @Operation(summary = "Create category", description = "Create new category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category created"),
+            @ApiResponse(responseCode = "400", description = "Category already exists")
+    })
     @PostMapping("/new")
     public ResponseEntity<String> newCategory(@RequestParam(value = "name", required = true) String name) {
         if (categoryRepo.findCategoryByName(name).isPresent()) {
@@ -43,7 +56,11 @@ public class CategoryController {
             return ResponseEntity.ok().body("Category successfully created");
         }
     }
-
+    @Operation(summary = "Delete category", description = "Delete category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category deleted"),
+            @ApiResponse(responseCode = "400", description = "Category with such id doesnt exists")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable(required = true, value = "id") Long id) {
         try {
