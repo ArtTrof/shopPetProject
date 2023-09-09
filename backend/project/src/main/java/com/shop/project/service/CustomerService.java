@@ -74,7 +74,7 @@ public class CustomerService implements UserDetailsService {
     }
 
     @Transactional
-    public CustomerDTO saveNewCustomer(Customer customer) {
+    public void saveNewCustomer(Customer customer) {
         String email = customer.getEmail();
         if (isEmailUnique(email)) {
             throw new ThrownException("User with such email already exists");
@@ -89,7 +89,6 @@ public class CustomerService implements UserDetailsService {
                 .password(passwordEncoder.encode(customer.getPassword()))
                 .build();
         customerRepo.save(customerToSave);
-        return null;
     }
 
     @Transactional
@@ -119,15 +118,19 @@ public class CustomerService implements UserDetailsService {
 
     @Transactional
     public void updateCustomerRole(Long id, String role) {
-        Customer customer = customerRepo.findCustomerById(id).get();
-        customer.getRoles().clear();
-        if (role.equalsIgnoreCase("ADMIN")) {
-            customer.setRoles(Set.of(Role.ADMIN));
-        } else if (role.equalsIgnoreCase("USER")) {
-            customer.setRoles(Set.of(Role.USER));
+        if (customerRepo.existsById(id)) {
+            Customer customer = customerRepo.findCustomerById(id).get();
+            customer.getRoles().clear();
+            if (role.equalsIgnoreCase("ADMIN")) {
+                customer.setRoles(Set.of(Role.ADMIN));
+            } else if (role.equalsIgnoreCase("USER")) {
+                customer.setRoles(Set.of(Role.USER));
+            } else {
+                customer.setRoles(Set.of(Role.USER));
+            }
+            customerRepo.save(customer);
         } else {
-            customer.setRoles(Set.of(Role.USER));
         }
-        customerRepo.save(customer);
+        throw new ThrownException("No customer with such id");
     }
 }

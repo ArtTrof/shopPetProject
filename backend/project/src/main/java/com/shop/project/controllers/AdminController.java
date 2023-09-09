@@ -54,14 +54,19 @@ public class AdminController {
         } else
             return ResponseEntity.notFound().build();
     }
+
     @Operation(summary = "Update user roles with id", description = "Update user role")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success update")
     })
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateCustomerRole(@PathVariable Long id, @RequestParam String role) {
-        service.updateCustomerRole(id, role);
-        return ResponseEntity.ok().build();
+        try {
+            service.updateCustomerRole(id, role);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage() + ",CODE:400");
+        }
     }
 
     private CustomerDTO mapCustomerToDTO(Customer customer) {
