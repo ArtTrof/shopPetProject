@@ -1,12 +1,10 @@
-FROM node:20.5.0-alpine
-
+FROM oven/bun
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install --silent
-
 COPY . .
+RUN bun i --silent
+RUN bun run build
+
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD bun run start
