@@ -3,7 +3,6 @@ package com.shop.project.controllers;
 import com.shop.project.dto.product.ProductFullDTO;
 import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Product;
-import com.shop.project.repository.ProductRepo;
 import com.shop.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,8 +35,6 @@ import static com.shop.project.util.validators.ValidationErrorResponse.getValida
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @Autowired
-    private ProductRepo repo;
     @Autowired
     private ModelMapper mapper;
 
