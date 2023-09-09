@@ -31,11 +31,11 @@ public class ProductService {
     private ProducerRepo producerRepo;
 
     @Transactional
-    public void saveProduct(Product product, MultipartFile image, Long categoryId, Long producerId) {
+    public void saveProduct(Product product, MultipartFile image, String categoryId, String producerId) {
         try {
             product.setImage(image.getBytes());
-            product.setCategory(categoryRepo.findById(categoryId).get());
-            product.setProducer(producerRepo.findById(producerId).get());
+            product.setCategory(categoryRepo.findCategoryByName(categoryId).get());
+            product.setProducer(producerRepo.findProducerByName(producerId).get());
             product.setContentType(image.getContentType());
             productRepo.save(product);
         } catch (IOException e) {

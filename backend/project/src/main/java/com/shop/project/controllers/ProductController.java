@@ -53,8 +53,8 @@ public class ProductController {
                                        @RequestParam("price") double price,
                                        @RequestParam("isAvailable") boolean isAvailable,
                                        @RequestParam("quantity") int quantity,
-                                       @RequestParam("category_id") Long category,
-                                       @RequestParam("producer_id") Long producer
+                                       @RequestParam("categoryName") String category,
+                                       @RequestParam("producerName") String producer
     ) {
         try {
             Product product = Product.builder()
