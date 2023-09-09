@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,7 @@ public class Product {
     @Column(name = "quantity")
     private int quantity;
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     @Column(name = "image")
     private byte[] image;
     @Column(name = "content_type")

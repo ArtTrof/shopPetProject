@@ -3,6 +3,7 @@ package com.shop.project.controllers;
 import com.shop.project.dto.product.ProductFullDTO;
 import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Product;
+import com.shop.project.repository.ProductRepo;
 import com.shop.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,10 +37,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
+    private ProductRepo repo;
+    @Autowired
     private ModelMapper mapper;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/new")
-    public ResponseEntity<String> test(@RequestParam("image") MultipartFile image,
+    public ResponseEntity<String> saveNewProduct(@RequestParam("image") MultipartFile image,
                                        @RequestParam("name") String name,
                                        @RequestParam("shortDescription") String shortDescription,
                                        @RequestParam("longDescription") String longDescription,
@@ -66,9 +69,10 @@ public class ProductController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<ProductFullDTO>> getAll() {
-        var products = productService.getAll();
-        return ResponseEntity.ok().body(products);
+    public ResponseEntity<List<ProductFullDTO>> getAll(
+            @RequestParam(name = "categoryName", required = false) String categoryName,
+            @RequestParam(name = "productName", required = false) String productName) {
+        return productService.getAll(categoryName, productName);
     }
 
     @GetMapping("/{id}")
@@ -82,7 +86,6 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @GetMapping("/getImage/{id}")

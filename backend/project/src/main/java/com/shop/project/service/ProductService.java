@@ -2,6 +2,7 @@ package com.shop.project.service;
 
 import com.shop.project.dto.product.ProductFullDTO;
 import com.shop.project.dto.product.ProductToUpdateDTO;
+import com.shop.project.models.Category;
 import com.shop.project.models.Product;
 import com.shop.project.repository.CategoryRepo;
 import com.shop.project.repository.ProducerRepo;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +52,29 @@ public class ProductService {
         }
     }
 
-    public List<ProductFullDTO> getAll() {
-        List<Product> products = productRepo.findAll();
+    public ResponseEntity<List<ProductFullDTO>> getAll(String categoryName, String productName) {
+        if (categoryName != null && !categoryName.isEmpty()) {
+            Optional<Category> category = categoryRepo.findCategoryByName(categoryName);
+            if (category.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                Optional<List<Product>> productsWithCategory = productRepo.findProductByCategory(category.get());
+                return productsWithCategory.map(products -> ResponseEntity.ok().body(parseListOfProductToFullDTO(products))).orElseGet(() -> ResponseEntity.badRequest().build());
+            }
+        } else if (productName != null && !productName.isEmpty()) {
+            Optional<List<Product>> products = productRepo.findProductByNameStartsWith(productName);
+            if (products.get().isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                return ResponseEntity.ok().body(parseListOfProductToFullDTO(products.get()));
+            }
+        } else {
+            List<Product> products = productRepo.findAll();
+            return ResponseEntity.ok().body(parseListOfProductToFullDTO(products));
+        }
+    }
+
+    private List<ProductFullDTO> parseListOfProductToFullDTO(List<Product> products) {
         List<ProductFullDTO> dtos = new ArrayList<>();
         for (Product product : products) {
             dtos.add(new ProductFullDTO(product.getId(),
@@ -76,6 +99,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public ResponseEntity<String> deleteById(Long id) {
         if (productRepo.existsById(id)) {
             productRepo.deleteById(id);
@@ -85,6 +109,7 @@ public class ProductService {
         }
     }
 
+    @Transactional
     public ResponseEntity<String> updateProductById(Long id, ProductToUpdateDTO dto) {
         if (productRepo.existsById(id)) {
             var product = productRepo.findById(id).get();
