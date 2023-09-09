@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static factory.CustomerFactory.generateCustomer;
@@ -63,7 +64,6 @@ public class AdminControllerUnitTest {
     @Test
     public void testUpdateCustomerId() {
         //Given
-        Customer customer = generateCustomer();
         long id = 1;
         String roles = Set.of(Role.USER).toString();
         //When
@@ -87,7 +87,7 @@ public class AdminControllerUnitTest {
         //Then
         verify(customerService, times(1)).updateCustomerRole(id, roles);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertTrue(response.getBody().contains("No customer with such id,CODE:400"));
+        assertTrue(Objects.requireNonNull(response.getBody()).contains("No customer with such id,CODE:400"));
     }
 
 }

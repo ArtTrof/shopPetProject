@@ -41,7 +41,7 @@ public class AdminControllerIntegrationTest {
         //Then
         MockHttpServletResponse response = result.getResponse();
         String content = response.getContentAsString();
-        List<CustomerDTO> resList = mapper.readValue(content, new TypeReference<List<CustomerDTO>>() {
+        List<CustomerDTO> resList = mapper.readValue(content, new TypeReference<>() {
         });
         assertEquals(customerDTOList, resList);
     }
