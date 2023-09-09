@@ -33,7 +33,6 @@ public class AdminControllerIntegrationTest {
     public void getAll() throws Exception {
         //Given
         List<CustomerDTO> customerDTOList = customerService.getCustomers();
-//        Mockito.when(customerService.getCustomers()).thenReturn(customerDTOList);
         //When
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/admin/users")
                         .contentType(MediaType.APPLICATION_JSON))
