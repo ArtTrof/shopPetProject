@@ -1,7 +1,9 @@
 package com.shop.project.controllers;
 
 import com.shop.project.models.Category;
+import com.shop.project.models.Producer;
 import com.shop.project.repository.CategoryRepo;
+import com.shop.project.repository.ProducerRepo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,56 +24,56 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/producer")
+public class ProducerController {
     @Autowired
-    private CategoryRepo categoryRepo;
+    private ProducerRepo producerRepo;
 
-    @Operation(summary = "Get names", description = "Get all category names")
+    @Operation(summary = "Get names", description = "Get all producer names")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Get all category names")
+            @ApiResponse(responseCode = "200", description = "Get all producer names")
     })
     @GetMapping("/getAllNames")
     public ResponseEntity<List<String>> getAllNames() {
-        return ResponseEntity.ok().body(categoryRepo.findAllNames());
+        return ResponseEntity.ok().body(producerRepo.findAllNames());
     }
 
-    @Operation(summary = "Get id and names", description = "Get all category id and names")
+    @Operation(summary = "Get id and names", description = "Get all producer id and names")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get all categories")
     })
     @GetMapping("/getAll")
-    public ResponseEntity<List<Category>> getAll() {
-        return ResponseEntity.ok().body(categoryRepo.findAll());
+    public ResponseEntity<List<Producer>> getAll() {
+        return ResponseEntity.ok().body(producerRepo.findAll());
     }
 
-    @Operation(summary = "Create category", description = "Create new category")
+    @Operation(summary = "Create producer", description = "Create new producer")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category created"),
-            @ApiResponse(responseCode = "400", description = "Category already exists")
+            @ApiResponse(responseCode = "200", description = "Producer created"),
+            @ApiResponse(responseCode = "400", description = "Producer already exists")
     })
     @PostMapping("/new")
     public ResponseEntity<String> newCategory(@RequestParam(value = "name", required = true) String name) {
-        if (categoryRepo.findCategoryByName(name).isPresent()) {
+        if (producerRepo.findProducerByName(name).isPresent()) {
             return ResponseEntity.badRequest().body(String.format("Category with name %s already exists", name));
         } else {
-            categoryRepo.save(Category.builder().name(name).build());
-            return ResponseEntity.ok().body("Category successfully created");
+            producerRepo.save(Producer.builder().name(name).build());
+            return ResponseEntity.ok().body("Producer successfully created");
         }
     }
 
-    @Operation(summary = "Delete category", description = "Delete category")
+    @Operation(summary = "Delete producer", description = "Delete producer")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Category deleted"),
-            @ApiResponse(responseCode = "400", description = "Category with such id doesnt exists")
+            @ApiResponse(responseCode = "200", description = "Producer deleted"),
+            @ApiResponse(responseCode = "400", description = "Producer with such id doesnt exists")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable(required = true, value = "id") Long id) {
         try {
-            categoryRepo.deleteById(id);
+            producerRepo.deleteById(id);
             return ResponseEntity.ok().body(String.format("Category with id %s was deleted", id));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Not found category with id:" + id + ",CODE:400");
+            return ResponseEntity.badRequest().body("Not found producer with id:" + id + ",CODE:400");
         }
     }
 }
