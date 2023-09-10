@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -68,4 +69,6 @@ public class Customer {
     @CollectionTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+    @OneToOne
+    private Cart cart;
 }
