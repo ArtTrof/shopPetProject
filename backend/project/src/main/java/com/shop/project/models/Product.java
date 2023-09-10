@@ -1,6 +1,5 @@
 package com.shop.project.models;
 
-import com.shop.project.models.cart.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,7 +56,5 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "producer_id")
     private Producer producer;
-    @ManyToMany(mappedBy = "products")
-    private List<CartItem> cartItems;
 
 }
