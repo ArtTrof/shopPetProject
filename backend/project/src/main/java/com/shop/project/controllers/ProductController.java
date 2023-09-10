@@ -47,15 +47,15 @@ public class ProductController {
             @ApiResponse(responseCode = "400", description = "Exception")
     })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/new")
-    public ResponseEntity<String> saveNewProduct(@RequestParam("image") MultipartFile image,
-                                                 @RequestParam("name") String name,
-                                                 @RequestParam("shortDescription") String shortDescription,
-                                                 @RequestParam("longDescription") String longDescription,
-                                                 @RequestParam("price") double price,
-                                                 @RequestParam("isAvailable") boolean isAvailable,
-                                                 @RequestParam("quantity") int quantity,
-                                                 @RequestParam("categoryName") String category,
-                                                 @RequestParam("producerName") String producer
+    public ResponseEntity<String> saveNewProduct(@RequestParam(name = "image", required = true) MultipartFile image,
+                                                 @RequestParam(name = "name", required = true) String name,
+                                                 @RequestParam(name = "shortDescription", required = true) String shortDescription,
+                                                 @RequestParam(name = "longDescription", required = true) String longDescription,
+                                                 @RequestParam(name = "price", required = true) double price,
+                                                 @RequestParam(name = "isAvailable", required = true) boolean isAvailable,
+                                                 @RequestParam(name = "quantity", required = true) int quantity,
+                                                 @RequestParam(name = "categoryName", required = true) String category,
+                                                 @RequestParam(name = "producerName", required = true) String producer
     ) {
         try {
             Product product = Product.builder()

@@ -1,6 +1,7 @@
 package com.shop.project.models;
 
 
+import com.shop.project.models.cart.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
