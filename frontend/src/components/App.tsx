@@ -2,6 +2,7 @@ import * as React from "react";
 import { customerService } from "../services/customer";
 
 import Header from "./Header";
+import Footer from "./Footer/Footer";
 
 export default () =>  {
 
@@ -19,28 +20,28 @@ export default () =>  {
   }
 
   return (
-    <>
-    <Header />
-
-    <h1>ReGistRRRRRati0n</h1>
-        <div>
-          <p>EMAIL</p>
-          <input type="email" value={email} onInput={(e: React.FormEvent<HTMLInputElement>) => {setEmail((e.target as HTMLInputElement).value)}} />
-        </div>
-        <div>
-          <p>First Name</p>
-          <input type="text" value={firstName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setFirstName((e.target as HTMLInputElement).value)}} />
-        </div>
-        <div>
-          <p>Last Name</p>
-          <input type="text" value={lastName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setLastName((e.target as HTMLInputElement).value)}} />
-        </div>
-        <div>
-          <p>Password</p>
-          <input type="password" value={password} onInput={(e: React.FormEvent<HTMLInputElement>) => {setPassword((e.target as HTMLInputElement).value)}} />
-        </div>
-        <button onClick={onRegisterSubmit}>Register</button>
-        <p>{reqRes}</p>
-    </>
+    <div className='min-h-screen m-0 p-0'>
+      <Header />
+      <h1>ReGistRRRRRati0n</h1>
+      <div>
+        <p>EMAIL</p>
+        <input type="email" value={email} onInput={(e: React.FormEvent<HTMLInputElement>) => {setEmail((e.target as HTMLInputElement).value)}} />
+      </div>
+      <div>
+        <p>First Name</p>
+        <input type="text" value={firstName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setFirstName((e.target as HTMLInputElement).value)}} />
+      </div>
+      <div>
+        <p>Last Name</p>
+        <input type="text" value={lastName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setLastName((e.target as HTMLInputElement).value)}} />
+      </div>
+      <div>
+        <p>Password</p>
+        <input type="password" value={password} onInput={(e: React.FormEvent<HTMLInputElement>) => {setPassword((e.target as HTMLInputElement).value)}} />
+      </div>
+      <button onClick={onRegisterSubmit}>Register</button>
+      <p>{reqRes}</p>
+      <Footer />
+    </div>
   );
 };
