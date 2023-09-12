@@ -1,7 +1,6 @@
 package com.shop.project.models;
 
 
-import com.shop.project.models.cart.Cart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,5 +70,5 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
     @OneToOne
-    private Cart cart;
+    private CartItem cartItem;
 }

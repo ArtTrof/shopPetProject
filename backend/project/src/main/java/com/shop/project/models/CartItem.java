@@ -1,13 +1,10 @@
-package com.shop.project.models.cart;
+package com.shop.project.models;
 
-import com.shop.project.models.Customer;
-import com.shop.project.models.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,13 +16,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cart")
+@Table(name = "cart_item")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

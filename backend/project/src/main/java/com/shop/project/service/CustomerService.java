@@ -4,6 +4,7 @@ import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.dto.customer.CustomerUpdateDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.models.Role;
+import com.shop.project.repository.CartItemRepo;
 import com.shop.project.repository.CustomerRepo;
 import com.shop.project.util.ThrownException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,13 @@ import java.util.Set;
 public class CustomerService implements UserDetailsService {
     private final CustomerRepo customerRepo;
     private final PasswordEncoder passwordEncoder;
+    private final CartItemRepo cartItemRepo;
 
     @Autowired
-    public CustomerService(CustomerRepo customerRepo, PasswordEncoder passwordEncoder) {
+    public CustomerService(CustomerRepo customerRepo, PasswordEncoder passwordEncoder, CartItemRepo cartItemRepo) {
         this.customerRepo = customerRepo;
         this.passwordEncoder = passwordEncoder;
+        this.cartItemRepo = cartItemRepo;
     }
 
     @Override
@@ -89,6 +92,7 @@ public class CustomerService implements UserDetailsService {
                 .password(passwordEncoder.encode(customer.getPassword()))
                 .build();
         customerRepo.save(customerToSave);
+
     }
 
     @Transactional
