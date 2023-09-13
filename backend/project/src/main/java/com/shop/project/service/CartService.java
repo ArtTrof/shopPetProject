@@ -131,4 +131,14 @@ public class CartService {
                 .quantity(cartItem.getProduct().getQuantity())
                 .build();
     }
+
+    public ResponseEntity<String> deleteItem(Long customerId, Long productId) {
+        Optional<CartItem> cartItem = cartItemRepo.findCartItemByProduct_IdAndCustomer_Id(productId, customerId);
+        if (cartItem.isPresent()) {
+            cartItemRepo.delete(cartItem.get());
+            return ResponseEntity.ok().body("Item was deleted from cart");
+        } else {
+            return ResponseEntity.badRequest().body(String.format("Cart item for customer ud:%s or productId:%s not found", customerId, productId));
+        }
+    }
 }
