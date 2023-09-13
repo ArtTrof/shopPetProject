@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -67,5 +68,18 @@ public class CartItemController {
             @RequestParam(name = "quantity", required = true) Integer quantity
     ) {
         return cartService.updateCartItemQuantity(quantity, productId, customerId);
+    }
+
+    @Operation(summary = "Delete item ", description = "Delete item in cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success delete"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    @DeleteMapping("/deleteItem/{customerId}")
+    public ResponseEntity<String> deleteItemFromCart(
+            @PathVariable Long customerId,
+            @RequestParam(name = "productId", required = true) Long productId
+    ) {
+        return cartService.deleteItem(customerId, productId);
     }
 }
