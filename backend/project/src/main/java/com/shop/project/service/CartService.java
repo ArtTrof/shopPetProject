@@ -2,8 +2,8 @@ package com.shop.project.service;
 
 import com.shop.project.dto.cart.CartProductDTO;
 import com.shop.project.dto.cart.ProductToCartMiniDTO;
-import com.shop.project.models.Customer;
 import com.shop.project.models.CartItem;
+import com.shop.project.models.Customer;
 import com.shop.project.models.Product;
 import com.shop.project.repository.CartItemRepo;
 import com.shop.project.repository.CustomerRepo;
@@ -36,9 +36,6 @@ public class CartService {
         }
         CartItem cart = customer.getCartItem();
         if (cart == null) {
-//            cart = Cart.builder().customer(customer).build();
-//            cartRepo.save(cart);
-//            customer.setCart(cart);
             return list;
         }
         Optional<List<CartItem>> optionalCarts = cartItemRepo.findByCustomer_Id(customerId);
@@ -88,6 +85,26 @@ public class CartService {
             return ResponseEntity.ok("Product added successfully");
         } else {
             return ResponseEntity.badRequest().body(String.format("Available quantity for product %s is %d", product.getName(), product.getQuantity()));
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<String> updateCartItemQuantity(Integer quantity, Long productId, Long customerId) {
+        Optional<CartItem> cartItem = cartItemRepo.findCartItemByProduct_IdAndCustomer_Id(productId, customerId);
+        if (cartItem.isPresent()) {
+            if (quantity < cartItem.get().getProduct().getQuantity()) {
+                if (quantity > 0) {
+                    cartItem.get().setQuantity(quantity);
+                    cartItemRepo.save(cartItem.get());
+                    return ResponseEntity.ok().body("Cart item quantity updated successfully");
+                } else {
+                    return ResponseEntity.badRequest().body("Quantity should be above 0");
+                }
+            } else {
+                return ResponseEntity.badRequest().body(String.format("Unable to add quantity:%s , because available items in stock is %s", quantity, cartItem.get().getProduct().getQuantity()));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(String.format("No cartItem with productId %s and customerId %s", productId, customerId));
         }
     }
 

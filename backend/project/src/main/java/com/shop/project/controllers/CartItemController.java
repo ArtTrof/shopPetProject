@@ -33,7 +33,7 @@ public class CartItemController {
     })
     @GetMapping("/getItems/{customerId}")
     public ResponseEntity<List<CartProductDTO>> getCartProducts(
-            @PathVariable(name = "customerId", required = true) Long customerId) {
+            @PathVariable(name = "customerId") Long customerId) {
         List<CartProductDTO> products = cartService.findCartProducts(customerId);
         if (products != null) {
             return ResponseEntity.ok().body(products);
@@ -41,11 +41,31 @@ public class CartItemController {
             return ResponseEntity.badRequest().build();
         }
     }
-    @PutMapping("/putItem/{id}")
+
+    @Operation(summary = "Put item to cart", description = "Put item to cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success get"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    @PutMapping("/putItem/{customerId}")
     public ResponseEntity<String> addItem(
-            @PathVariable(name = "id",required = true)Long customerId,
+            @PathVariable(name = "customerId") Long customerId,
             @RequestParam(name = "productId", required = true) Long productId,
             @RequestParam(name = "quantity", required = false) Integer quantity) {
-        return cartService.addItemToCart(customerId,productId, quantity);
+        return cartService.addItemToCart(customerId, productId, quantity);
+    }
+
+    @Operation(summary = "Update item quantity", description = "Update item quantity")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success update"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    @PutMapping("/updateItem/{customerId}")
+    public ResponseEntity<String> updateItemQuantity(
+            @PathVariable Long customerId,
+            @RequestParam(name = "productId", required = true) Long productId,
+            @RequestParam(name = "quantity", required = true) Integer quantity
+    ) {
+        return cartService.updateCartItemQuantity(quantity, productId, customerId);
     }
 }
