@@ -40,4 +40,6 @@ public class Order {
     private List<Product> productIds;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name="total_price")
+    private double totalPrice;
 }
