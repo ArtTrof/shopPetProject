@@ -19,6 +19,7 @@ public class CustomerRegistrationDTO {
     @NotBlank(message = "first name can't be blank")
     @Length(min = 1, max = 200, message = "First name should be between 2 and 200 characters")
     private String firstName;
+    @NotBlank(message = "last name can't be blank")
     @Length(min = 1, max = 200, message = "Last name should be between 2 and 200 characters")
     private String lastName;
     @NotBlank(message = "email required")
