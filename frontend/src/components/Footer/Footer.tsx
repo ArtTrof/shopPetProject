@@ -1,4 +1,4 @@
-import { AppBar, Grid, Typography, Link, IconButton,} from '@mui/material';
+import { Grid, Typography, Link, IconButton,} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 // @ts-ignore
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -9,7 +9,7 @@ export default () => {
     
     return (
         <>
-            <Grid2 container className='absolute inset-x-0 bottom-0 bg-black h-7 flex items-center justify-between px-10'>
+            <Grid2 container className='bottom-0 bg-black h-7 flex items-center justify-between px-10'>
                 <Grid item xs={4} className='p-0 h-max'>
                     <IconButton component={Link} href="https://github.com" className='p-0 h-5'>
                         <GitHubIcon className='text-xs opacity-50 text-white hover:text-sky-500 hover:opacity-100' /> {/* Customize icon size */}
