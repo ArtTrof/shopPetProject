@@ -78,6 +78,14 @@ public class CartService {
                 quantityToAdd = quantity;
             }
             cartItem = CartItem.builder().product(product).customer(customer.get()).quantity(quantityToAdd).build();
+            if (canItemBeAdded(product.getQuantity(), quantityToAdd)) {
+                cartItemRepo.save(cartItem);
+                customer.get().setCartItem(cartItem);
+                customerRepo.save(customer.get());
+                return ResponseEntity.ok("Product added successfully");
+            } else {
+                return ResponseEntity.badRequest().body(String.format("Available quantity for product %s is %d", product.getName(), product.getQuantity()));
+            }
         }
 
         if (canItemBeAdded(product.getQuantity(), quantityToAdd)) {
