@@ -1,10 +1,32 @@
+import React from 'react';
 import { createRoot  } from 'react-dom/client';
-import App from "./components/App";
+import { BrowserRouter } from 'react-router-dom';
+
 import './index.css';
+import App from "./components/App";
+import { ThemeProvider, createTheme } from '@mui/material';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fff',
+    },
+    secondary: {
+      main: '#000',
+    },
+  },
+});
+
+
 root.render(
-    <App />
+  <React.StrictMode>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

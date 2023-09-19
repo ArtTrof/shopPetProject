@@ -38,38 +38,38 @@ export default () => {
                 <TextField className="!m-4"
                 label="First Name" variant="outlined" value={firstName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setFirstName((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
-                <TextField className="!m-4" 
+                <TextField className="!m-4"
                 label="Last Name" variant="outlined" value={lastName} onInput={(e: React.FormEvent<HTMLInputElement>) => {setLastName((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
-                <TextField className="!m-4" 
+                <TextField className="!m-4"
                 label="Email" variant="outlined" value={email} onInput={(e: React.FormEvent<HTMLInputElement>) => {setEmail((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
             </Grid>
             <Grid item xs={6} className="w-11/12">
-                <TextField className="!m-4" 
+                <TextField className="!m-4"
                 label="Password" variant="outlined" type="password" value={password} onInput={(e: React.FormEvent<HTMLInputElement>) => {setPassword((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
-                {isPasswordSimilar 
-                ? 
-                <TextField className="!m-4" 
+                {isPasswordSimilar
+                ?
+                <TextField className="!m-4"
                 onBlur={() => {checkPassword()}}
                 label="Confirm Password" variant="outlined" type="password" value={rePassword} onInput={(e: React.FormEvent<HTMLInputElement>) => {setRePassword((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
-                : 
-                <TextField className="!m-4" 
+                :
+                <TextField className="!m-4"
                 onBlur={() => {checkPassword()}}
                 error
                 label="Incorrect Password" id="outlined-error" type="password" value={rePassword} onInput={(e: React.FormEvent<HTMLInputElement>) => {setRePassword((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
                 }
-                <TextField className="!m-4" 
+                <TextField className="!m-4"
                 label="Phone Number" variant="outlined" type="number" value={phone} onInput={(e: React.FormEvent<HTMLInputElement>) => {setPhone((e.target as HTMLInputElement).value)}}
                 color="secondary"/>
             </Grid>
             <Grid item xs={6} display="flex" alignItems="center" justifyContent="center">
-                <Button onClick={onRegisterSubmit} type="submit" 
+                <Button onClick={onRegisterSubmit} type="submit"
                 className="!py-4 !bg-sky-500 !w-40 !rounded-3xl mx-auto my-0">
-                Sing Up
+                Sign Up
                 </Button>
             </Grid>
             <Grid item xs={6}  display="flex" alignItems="center" justifyContent="center">
