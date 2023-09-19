@@ -1,10 +1,10 @@
 import Header from "./Header";
 import Footer from "./Footer/Footer";
 import ContactUsWidget from "./ContactUsWidget";
-        
+
 import { Route, Routes } from 'react-router-dom';
-import { NotFound } from '@pages/NotFound';
-import { SignUp } from '@pages/SignUp';
+import NotFound from '@pages/NotFound';
+import SignUp from '@pages/SignUp';
 
 export default () =>  {
   return (
