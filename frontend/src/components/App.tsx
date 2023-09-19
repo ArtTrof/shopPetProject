@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Header from "./Header";
 import Footer from "./Footer/Footer";
 import ContactUsWidget from "./ContactUsWidget";
-import SingUp from '../pages/SingUp/SingUp';
+import SingUp from '@pages/SingUp/SingUp';
 
 export default () =>  {
 
