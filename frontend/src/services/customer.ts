@@ -10,5 +10,11 @@ export const customerService = {
             lastName,
             phone
         });
+    },
+    login: async (email: string, password: string) => {
+        return await axios.post(`${API_URL}/login`, {
+            email,
+            password
+        });
     }
 };
