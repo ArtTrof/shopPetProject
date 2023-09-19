@@ -4,6 +4,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: './',
+  publicDir: './public',
   server: {
     host: true,
     port: 8080,

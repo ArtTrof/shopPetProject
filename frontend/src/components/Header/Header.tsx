@@ -1,11 +1,15 @@
-import { AppBar, Typography, Link, IconButton, Box,} from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { AppBar, Typography, Link, IconButton, Box,} from '@mui/material';
+
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default () => {
+    const navigate = useNavigate();
     const [activeMenu, setActiveMenu] = useState(-1);
 
 	const onActiveMenu = (index: any) => {
@@ -39,7 +43,7 @@ export default () => {
                         <IconButton component={Link} href="#">
                             <ShoppingCartIcon className='text-black hover:text-sky-500' />
                         </IconButton>
-                        <IconButton component={Link} href="#">
+                        <IconButton component={Link} onClick={() => {navigate('/signup')}}>
                             <AccountCircleIcon className='text-black hover:text-sky-500' />
                         </IconButton>
                     </Box>

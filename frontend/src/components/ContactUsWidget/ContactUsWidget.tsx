@@ -18,7 +18,7 @@ export default () => {
                     <Typography component="div" className='whitespace-nowrap text-white overflow-hidden text-ellipsis text-xs opacity-70 inline'>
                         Visit our showroom in Zalupa Street Vagina City, 1337
                     </Typography>
-                    <a className='underline decoration-2 hover:underline-offset-4 pl-3 hover:text-sky-500' href='#'>Contact Us</a>
+                    <a className='underline decoration-2 text-white hover:underline-offset-4 pl-3 hover:text-sky-500' href='#'>Contact Us</a>
                 </Box>
                 <Box display="flex" justifyContent="end">
                     <IconButton component={Link} href="https://github.com" className='p-0 h-7'>
