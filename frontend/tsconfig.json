@@ -34,6 +34,17 @@
     "alwaysStrict": true,
     "noImplicitReturns": true,
     "skipDefaultLibCheck": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
+      ],
+    },
   },
   "include": [
     "src/**/*"
@@ -41,4 +52,5 @@
   "exclude": [
     "node_modules/**/*"
   ],
+
 }
