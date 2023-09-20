@@ -1,4 +1,4 @@
-package com.shop.project.unit;
+package com.shop.project.unit.controllers;
 
 import com.shop.project.controllers.AdminController;
 import com.shop.project.dto.customer.CustomerDTO;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static factory.CustomerFactory.generateCustomer;
-import static factory.CustomerFactory.mapCustomerToDTO;
+import static factory.ObjectsFactory.generateCustomer;
+import static factory.ObjectsFactory.mapCustomerToDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
