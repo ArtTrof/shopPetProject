@@ -2,6 +2,7 @@ package com.shop.project.controllers;
 
 import com.shop.project.dto.cart.CartProductDTO;
 import com.shop.project.service.CartService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/cart")
+@Api(tags = "! Cart item endpoints")
 public class CartItemController {
     @Autowired
     private CartService cartService;
@@ -32,7 +36,7 @@ public class CartItemController {
             @ApiResponse(responseCode = "200", description = "Success get"),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    @GetMapping("/getItems/{customerId}")
+    @GetMapping("/getCartItems/{customerId}")
     public ResponseEntity<List<CartProductDTO>> getCartProducts(
             @PathVariable(name = "customerId") Long customerId) {
         List<CartProductDTO> products = cartService.findCartProducts(customerId);
@@ -48,7 +52,7 @@ public class CartItemController {
             @ApiResponse(responseCode = "200", description = "Success get"),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    @PutMapping("/putItem/{customerId}")
+    @PostMapping("/addCartItem/{customerId}")
     public ResponseEntity<String> addItem(
             @PathVariable(name = "customerId") Long customerId,
             @RequestParam(name = "productId", required = true) Long productId,
@@ -61,7 +65,7 @@ public class CartItemController {
             @ApiResponse(responseCode = "200", description = "Success update"),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    @PutMapping("/updateItem/{customerId}")
+    @PutMapping("/updateCartItem/{customerId}")
     public ResponseEntity<String> updateItemQuantity(
             @PathVariable Long customerId,
             @RequestParam(name = "productId", required = true) Long productId,
@@ -75,7 +79,7 @@ public class CartItemController {
             @ApiResponse(responseCode = "200", description = "Success delete"),
             @ApiResponse(responseCode = "400", description = "Bad request")
     })
-    @DeleteMapping("/deleteItem/{customerId}")
+    @DeleteMapping("/deleteCartItem/{customerId}")
     public ResponseEntity<String> deleteItemFromCart(
             @PathVariable Long customerId,
             @RequestParam(name = "productId", required = true) Long productId
