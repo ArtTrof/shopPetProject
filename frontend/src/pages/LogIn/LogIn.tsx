@@ -1,16 +1,22 @@
-import Grid2 from "@mui/material/Unstable_Grid2";
 import React from "react";
-import { customerService } from "../../services/customer";
-import { isValidEmail } from "../../utils";
+import { useNavigate } from 'react-router-dom';
+
+import Grid2 from "@mui/material/Unstable_Grid2";
+
+import { isValidEmail } from "@/utils";
+import { customerService } from "@/services";
+
 
 const MIN_PASSWD_LENGTH = 8;
 
 export const LogIn: React.FC = (): React.ReactNode => {
+    const navigate = useNavigate();
+
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
-    const onRegisterSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const onRegisterSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): Promise<void> => {
       if (!isValidEmail(email)) {
         showError('Invalid email')
         return;
@@ -20,7 +26,9 @@ export const LogIn: React.FC = (): React.ReactNode => {
         return;
       }
 
-      customerService.login(email, password);
+      customerService.login(email, password)
+        .then(() => navigate('/'))
+        .catch(() => showError('Failed to login!'));
     }
 
     const showError = (message: string): void => {

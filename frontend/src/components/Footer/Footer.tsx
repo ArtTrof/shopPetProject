@@ -1,12 +1,12 @@
 import { Grid, Typography, Link, IconButton,} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-// @ts-ignore
+
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 export default () => {
-    
+
     return (
         <>
             <Grid2 container className='bottom-0 bg-black h-7 flex items-center justify-between px-10'>

@@ -24,7 +24,7 @@ export default () => {
                 <Grid2 xs={10} display="flex" justifyContent="space-between" className="h-16">
                     <Box display="flex" alignItems="center">
                         <img
-                            onClick={() => onActiveMenu(-1)}
+                            onClick={() => navigate('/')}
                             src="/logo.png"
                             alt="Logo" className='h-11 w-auto cursor-pointer'
                         />
@@ -37,13 +37,13 @@ export default () => {
                         )}
                     </Box>
                     <Box display="flex"  className='items-center justify-end'>
-                        <IconButton component={Link} href="#">
+                        <IconButton component={Link}>
                             <SearchIcon className='text-black hover:text-sky-500' />
                         </IconButton>
-                        <IconButton component={Link} href="#">
+                        <IconButton component={Link} onClick={() => navigate('/cart')}>
                             <ShoppingCartIcon className='text-black hover:text-sky-500' />
                         </IconButton>
-                        <IconButton component={Link} onClick={() => {navigate('/signup')}}>
+                        <IconButton component={Link} onClick={() => navigate('/login')}>
                             <AccountCircleIcon className='text-black hover:text-sky-500' />
                         </IconButton>
                     </Box>

@@ -1,0 +1,1 @@
+export { customerService } from './customer';

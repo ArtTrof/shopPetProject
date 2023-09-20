@@ -1,8 +1,8 @@
 import * as React from "react";
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { Grid, Typography} from '@mui/material';
-import { customerService } from "../../services/customer";
+
+import { Button, Grid, TextField, Typography} from '@mui/material';
+
+import { customerService } from "@/services";
 
 export default () => {
     const [firstName, setFirstName] = React.useState("");

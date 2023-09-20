@@ -44,6 +44,9 @@
       "@pages/*": [
         "./src/pages/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
     },
   },
   "include": [

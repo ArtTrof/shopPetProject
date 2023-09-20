@@ -1,1 +1,1 @@
-export {default} from './ContactUsWidget';
+export { default } from './ContactUsWidget';

@@ -1,10 +1,7 @@
-import Header from "./Header";
-import Footer from "./Footer/Footer";
-import ContactUsWidget from "./ContactUsWidget";
-
 import { Route, Routes } from 'react-router-dom';
-import NotFound from '@pages/NotFound';
-import SignUp from '@pages/SignUp';
+
+import { Main, NotFound, SignUp, LogIn, Item, Cart } from "@/pages";
+import { ContactUsWidget, Footer, Header } from '.';
 
 export default () =>  {
   return (
@@ -12,7 +9,11 @@ export default () =>  {
       <ContactUsWidget />
       <Header />
       <Routes>
-        <Route path="signup" element={<SignUp />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/:itemId" element={<Item />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
