@@ -139,7 +139,7 @@ public class CartService {
                 .quantity(cartItem.getProduct().getQuantity())
                 .build();
     }
-
+    @Transactional
     public ResponseEntity<String> deleteItem(Long customerId, Long productId) {
         Optional<CartItem> cartItem = cartItemRepo.findCartItemByProduct_IdAndCustomer_Id(productId, customerId);
         if (cartItem.isPresent()) {
