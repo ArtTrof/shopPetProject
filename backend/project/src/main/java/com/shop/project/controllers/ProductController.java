@@ -4,6 +4,7 @@ import com.shop.project.dto.product.ProductFullDTO;
 import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Product;
 import com.shop.project.service.ProductService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,13 +36,14 @@ import static com.shop.project.util.validators.ValidationErrorResponse.getValida
 @CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/product")
+@Api(tags = "! Product endpoints")
 public class ProductController {
     @Autowired
     private ProductService productService;
     @Autowired
     private ModelMapper mapper;
 
-    @Operation(summary = "Save product", description = "Save new product")
+    @Operation(summary = "Create product", description = "Create new product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success save"),
             @ApiResponse(responseCode = "400", description = "Exception")

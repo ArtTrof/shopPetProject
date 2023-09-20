@@ -3,6 +3,7 @@ package com.shop.project.controllers;
 import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.service.CustomerService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/admin")
+@Api(tags = "! Admin endpoints")
 public class AdminController {
     @Autowired
     private CustomerService service;

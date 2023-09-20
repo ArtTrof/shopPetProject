@@ -2,6 +2,7 @@ package com.shop.project.controllers;
 
 import com.shop.project.dto.order.OrderFullDTO;
 import com.shop.project.service.OrderService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/order")
+@Api(tags = "! Orders endpoints")
 public class OrderController {
     @Autowired
     private OrderService orderService;

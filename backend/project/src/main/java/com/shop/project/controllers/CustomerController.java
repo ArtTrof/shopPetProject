@@ -4,6 +4,7 @@ import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.dto.customer.CustomerUpdateDTO;
 import com.shop.project.models.Customer;
 import com.shop.project.service.CustomerService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -28,6 +29,7 @@ import static com.shop.project.util.validators.ValidationErrorResponse.getValida
 @RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/customer")
+@Api(tags = "! Customer endpoints")
 public class CustomerController {
     @Autowired
     private final CustomerService service;
