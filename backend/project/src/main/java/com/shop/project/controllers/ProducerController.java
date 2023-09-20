@@ -1,8 +1,6 @@
 package com.shop.project.controllers;
 
-import com.shop.project.models.Category;
 import com.shop.project.models.Producer;
-import com.shop.project.repository.CategoryRepo;
 import com.shop.project.repository.ProducerRepo;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/producer")
-@Api(tags = "! Producers of product endpoints")
+@Api(tags = "! Producers of products endpoints")
 public class ProducerController {
     @Autowired
     private ProducerRepo producerRepo;
