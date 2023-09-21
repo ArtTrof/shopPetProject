@@ -2,9 +2,14 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      'xl': '1440px',
+      'md': '1024px',
+    },
     extend: {
       colors: {
-        primary: '#1B73E8',
+        'blue': '#0156FF',
+        'medium-gray': '#666666',
       },
     },
   },

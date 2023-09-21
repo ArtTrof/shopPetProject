@@ -1,5 +1,4 @@
 import {IconButton, Link, Typography, Box} from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -8,8 +7,8 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 
 export default () => {
     return (
-        <Grid2 container  display="flex" justifyContent="center" alignItems="center" className='bg-black h-8 w-full'>
-            <Grid2 xs={10} display="flex" justifyContent="space-between">
+        <div className="w-full bg-black h-8">
+            <div className='container mx-auto flex items-center justify-between'>
                 <Box display="flex" alignItems="center">
                     <Typography component="div" className='fwhitespace-nowrap text-white overflow-hidden text-ellipsis text-base italic'>
                         One kebab please
@@ -32,7 +31,7 @@ export default () => {
                         <InstagramIcon className='text-xl text-white hover:text-sky-500' /> {/* Customize icon size */}
                     </IconButton>
                 </Box>
-            </Grid2>
-        </Grid2>
+            </div>
+        </div>
     )
 }
