@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Typography, Link, IconButton, Box,} from '@mui/material';
+import { Typography, Link, IconButton} from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -17,9 +17,9 @@ export default () => {
     const navMenu = ['Laptops', 'Phone', 'PC', 'All Other'];
 
     return (
-        <AppBar position="sticky" color="primary" className='!w-full'>
-            <div className="container mx-auto flex items-center justify-between h-16">
-                <Box display="flex" alignItems="center">
+        <div className='w-full shadow-md'>
+            <div className="flex items-center max-w-screen-2xl justify-between mx-auto h-16">
+                <div className='flex items-center'>
                     <img
                         onClick={() => navigate('/')}
                         src="/logo.png"
@@ -32,8 +32,8 @@ export default () => {
                             </Typography>
                         )
                     )}
-                </Box>
-                <Box display="flex"  className='items-center justify-end'>
+                </div>
+                <div className='flex items-center justify-end'>
                     <IconButton component={Link}>
                         <SearchIcon className='text-black hover:text-sky-500' />
                     </IconButton>
@@ -43,8 +43,8 @@ export default () => {
                     <IconButton component={Link} onClick={() => navigate('/login')}>
                         <AccountCircleIcon className='text-black hover:text-sky-500' />
                     </IconButton>
-                </Box>
+                </div>
             </div>
-        </AppBar>
+        </div>
     )
 };

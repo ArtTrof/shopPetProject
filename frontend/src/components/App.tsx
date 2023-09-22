@@ -22,14 +22,16 @@ export default () =>  {
               </Routes>
             </div>
             <div className="flex grow">
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/:itemId" element={<Item />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <div className="w-full">
+                <Routes>
+                  <Route path="/" element={<Main />} />
+                  <Route path="/:itemId" element={<Item />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/login" element={<LogIn />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
             </div>
           </div>
         </div>
