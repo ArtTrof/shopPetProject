@@ -28,8 +28,8 @@ export default () => {
                 <div className="flex">
                     <div className="p-3 w-1/2">
                         <Input label="First name" placeholder="First name" required value={firstName} onChange={e => setFirstName((e.target as HTMLInputElement).value)}/>
-                        <Input label="Last name" placeholder="Last name" required value={firstName} onChange={e => setLastName((e.target as HTMLInputElement).value)}/>
-                        <Input label="Phone number" placeholder="Last name" type="tel" required value={firstName} onChange={e => setPhone((e.target as HTMLInputElement).value)}/>
+                        <Input label="Last name" placeholder="Last name" required value={lastName} onChange={e => setLastName((e.target as HTMLInputElement).value)}/>
+                        <Input label="Phone number" placeholder="Phone number" type="tel" required value={phone} onChange={e => setPhone((e.target as HTMLInputElement).value)}/>
                         <button className="bg-blue rounded-full px-10 py-3 text-white float-right" onClick={e => onRegisterSubmit(e)}>Sign In</button>
                     </div>
                     <div className="p-3 w-1/2">
