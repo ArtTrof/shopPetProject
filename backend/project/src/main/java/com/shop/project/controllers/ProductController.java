@@ -1,6 +1,7 @@
 package com.shop.project.controllers;
 
 import com.shop.project.dto.product.ProductFullDTO;
+import com.shop.project.dto.product.ProductToCreate;
 import com.shop.project.dto.product.ProductToUpdateDTO;
 import com.shop.project.models.Product;
 import com.shop.project.service.ProductService;
@@ -11,8 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,7 +34,7 @@ import static com.shop.project.util.validators.ValidationErrorResponse.getValida
 @CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/product")
-@Api(tags = "! Product endpoints")
+@Api(tags = "! Products endpoints")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -48,28 +46,23 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Success save"),
             @ApiResponse(responseCode = "400", description = "Exception")
     })
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, path = "/new")
-    public ResponseEntity<String> saveNewProduct(@RequestParam(name = "image", required = true) MultipartFile image,
-                                                 @RequestParam(name = "name", required = true) String name,
-                                                 @RequestParam(name = "shortDescription", required = true) String shortDescription,
-                                                 @RequestParam(name = "longDescription", required = true) String longDescription,
-                                                 @RequestParam(name = "price", required = true) double price,
-                                                 @RequestParam(name = "isAvailable", required = true) boolean isAvailable,
-                                                 @RequestParam(name = "quantity", required = true) int quantity,
-                                                 @RequestParam(name = "categoryName", required = true) String category,
-                                                 @RequestParam(name = "producerName", required = true) String producer
+    @PostMapping(path = "/new")
+    public ResponseEntity<String> saveNewProduct(
+            @RequestBody @Valid ProductToCreate dto, BindingResult bindingResult
     ) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(getValidationErrors(bindingResult));
+        }
         try {
             Product product = Product.builder()
-                    .name(name)
-                    .price(price)
-                    .isAvailable(isAvailable)
-                    .shortDescription(shortDescription)
-                    .longDescription(longDescription)
-                    .quantity(quantity)
+                    .name(dto.getName())
+                    .price(dto.getPrice())
+                    .isAvailable(dto.getIsAvailable())
+                    .shortDescription(dto.getShortDescription())
+                    .longDescription(dto.getLongDescription())
+                    .quantity(dto.getQuantity())
                     .build();
-            productService.saveProduct(product, image, category, producer);
-            return ResponseEntity.ok("Product registered successfully");
+           return productService.saveProduct(product, dto.getCategory(), dto.getProducer());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(String.format(e.getMessage() + ",CODE: 400"));
         }
@@ -103,18 +96,6 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @Operation(summary = "Get product image", description = "Get product image by id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product image found")
-    })
-    @GetMapping("/getImage/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-        var dto = productService.getProductImage(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.valueOf(dto.getContentType()));
-        return ResponseEntity.ok().headers(headers).body(dto.getImage());
     }
 
     @Operation(summary = "Delete product", description = "Delete product with id")

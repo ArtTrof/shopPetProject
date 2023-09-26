@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,9 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -42,17 +43,12 @@ public class Product {
     private boolean isAvailable;
     @Column(name = "quantity")
     private int quantity;
-    @Lob
-    @Type(type = "org.hibernate.type.ImageType")
-    @Column(name = "image")
-    private byte[] image;
-    @Column(name = "content_type")
-    private String contentType;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "producer_id")
     private Producer producer;
-
 }
