@@ -13,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,27 +29,44 @@ public class ProductService {
     @Autowired
     private ProducerRepo producerRepo;
 
+    //    @Transactional
+//    public void saveProduct(Product product, MultipartFile image, String categoryId, String producerId) {
+//        try {
+//            product.setImage(image.getBytes());
+//            product.setCategory(categoryRepo.findCategoryByName(categoryId).get());
+//            product.setProducer(producerRepo.findProducerByName(producerId).get());
+//            product.setContentType(image.getContentType());
+//            productRepo.save(product);
+//        } catch (IOException e) {
+//            throw new ThrownException(e.getMessage());
+//        }
+//    }
     @Transactional
-    public void saveProduct(Product product, MultipartFile image, String categoryId, String producerId) {
-        try {
-            product.setImage(image.getBytes());
-            product.setCategory(categoryRepo.findCategoryByName(categoryId).get());
-            product.setProducer(producerRepo.findProducerByName(producerId).get());
-            product.setContentType(image.getContentType());
-            productRepo.save(product);
-        } catch (IOException e) {
-            throw new ThrownException(e.getMessage());
+    public ResponseEntity<String> saveProduct(Product product, String category, String producer) {
+        Optional<Category> categoryByName = categoryRepo.findCategoryByName(category);
+        Optional<Producer> producerByName = producerRepo.findProducerByName(producer);
+        if (categoryByName.isPresent()) {
+            product.setCategory(categoryByName.get());
+        } else {
+            return ResponseEntity.badRequest().body(String.format("No category with name: %s", category));
         }
+        if (producerByName.isPresent()) {
+            product.setProducer(producerByName.get());
+        } else {
+            return ResponseEntity.badRequest().body(String.format("No producer with name: %s", producer));
+        }
+        productRepo.save(product);
+        return ResponseEntity.ok().body("Product created successfully!");
     }
 
-    public Product getProductImage(Long id) {
-        var product = productRepo.findById(id);
-        if (product.isPresent()) {
-            return Product.builder().image(product.get().getImage()).contentType(product.get().getContentType()).build();
-        } else {
-            throw new ThrownException("No product with such id");
-        }
-    }
+//    public Product getProductImage(Long id) {
+//        var product = productRepo.findById(id);
+//        if (product.isPresent()) {
+//            return Product.builder().image(product.get().getImage()).contentType(product.get().getContentType()).build();
+//        } else {
+//            throw new ThrownException("No product with such id");
+//        }
+//    }
 
     public ResponseEntity<List<ProductFullDTO>> getAll(String productName, String categoryName, String producerName) {
         Optional<Producer> producer = Optional.empty();
