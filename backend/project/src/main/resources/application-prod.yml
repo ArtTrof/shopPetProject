@@ -1,9 +1,22 @@
 spring:
+  config:
+    import: classpath:secret.yml
   datasource:
     url: jdbc:postgresql://postgresqldb:5432/shopDb
     password: postgres
     username: postgres
     driver-class-name: org.postgresql.Driver
+  mail:
+    port: 465
+    host: smtp.gmail.com
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+    protocol: smtps
   jpa:
     properties:
       hibernate:
@@ -20,3 +33,4 @@ spring:
     baseline-on-migrate: true
 server:
   port: 9090
+frontend_url: localhost:8080
