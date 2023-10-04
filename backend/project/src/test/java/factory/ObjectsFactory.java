@@ -29,8 +29,6 @@ public class ObjectsFactory {
     public static Product generateProduct() {
         return Product.builder()
                 .id(new Random().nextLong())
-                .contentType(null)
-                .image(null)
                 .price(new Random().nextInt(10, 1000))
                 .isAvailable(true)
                 .name("TestProduct" + new Random().nextInt(0, 100))

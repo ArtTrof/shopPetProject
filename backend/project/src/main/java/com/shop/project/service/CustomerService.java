@@ -156,7 +156,7 @@ public class CustomerService implements UserDetailsService {
             customerTmpRepo.save(CustomerTmp.builder().id(uniqueId).customer(customer).build());
             String message = String.format("Hello ,%s" +
                     "\nIf you want to reset the password to your account go to this link:" +
-                    "\n%s/reset-password/%s" +
+                    "\nhttps://%s/reset-password/%s" +
                     "\nIf it's not you,just ignore the email!", customer.getFirstName(), FRONT_URL, uniqueId);
             mailSender.send(email, "Password reset", message);
             return ResponseEntity.ok().body("The email with instruction was sent on your email,if you don't see it check spam");
