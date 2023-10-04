@@ -104,11 +104,10 @@ values (0, 'Iphone 14 ProMax', 'Cool smartphone', 'Some long desc', 1550, true, 
 insert into cart_item (id, product_id, customer_id, quantity)
 values (0, 0, 0, 20);
 
--- insert into customer_order(id, customer_id, total_price, created_at)
--- values (0, 0, 2000.555, now());
-
--- insert into order_products(order_id, product_id)
--- VALUES (0, 0);
-
 update customer
 set cart_item_id=0;
+
+create table customer_tmp(
+    id varchar(1000) primary key ,
+    customer_id bigint references customer(id)
+)

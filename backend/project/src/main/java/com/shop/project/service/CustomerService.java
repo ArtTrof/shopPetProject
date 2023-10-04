@@ -3,11 +3,14 @@ package com.shop.project.service;
 import com.shop.project.dto.customer.CustomerDTO;
 import com.shop.project.dto.customer.CustomerUpdateDTO;
 import com.shop.project.models.Customer;
+import com.shop.project.models.CustomerTmp;
 import com.shop.project.models.Role;
 import com.shop.project.repository.CartItemRepo;
 import com.shop.project.repository.CustomerRepo;
+import com.shop.project.repository.CustomerTempPasswordRepo;
 import com.shop.project.util.ThrownException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,18 +28,25 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class CustomerService implements UserDetailsService {
+    private final CustomerTempPasswordRepo customerTmpRepo;
     private final CustomerRepo customerRepo;
     private final PasswordEncoder passwordEncoder;
     private final CartItemRepo cartItemRepo;
+    private final MailSender mailSender;
+    @Value("${frontend_url}")
+    private String FRONT_URL;
 
     @Autowired
-    public CustomerService(CustomerRepo customerRepo, PasswordEncoder passwordEncoder, CartItemRepo cartItemRepo) {
+    public CustomerService(CustomerTempPasswordRepo customerTmpRepo, CustomerRepo customerRepo, PasswordEncoder passwordEncoder, CartItemRepo cartItemRepo, MailSender mailSender) {
+        this.customerTmpRepo = customerTmpRepo;
         this.customerRepo = customerRepo;
         this.passwordEncoder = passwordEncoder;
         this.cartItemRepo = cartItemRepo;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -136,5 +146,35 @@ public class CustomerService implements UserDetailsService {
         } else {
         }
         throw new ThrownException("No customer with such id");
+    }
+
+    public ResponseEntity<?> checkEmailAndSendLinkToResetPassword(String email) {
+        Optional<Customer> customerRepoByEmail = customerRepo.findByEmail(email);
+        if (customerRepoByEmail.isPresent()) {
+            String uniqueId = UUID.randomUUID().toString();
+            Customer customer = customerRepoByEmail.get();
+            customerTmpRepo.save(CustomerTmp.builder().id(uniqueId).customer(customer).build());
+            String message = String.format("Hello ,%s" +
+                    "\nIf you want to reset the password to your account go to this link:" +
+                    "\n%s/reset-password/%s" +
+                    "\nIf it's not you,just ignore the email!", customer.getFirstName(), FRONT_URL, uniqueId);
+            mailSender.send(email, "Password reset", message);
+            return ResponseEntity.ok().body("The email with instruction was sent on your email,if you don't see it check spam");
+        } else {
+            return ResponseEntity.badRequest().body("There is no customer with email:" + email);
+        }
+    }
+
+    public ResponseEntity<?> updateCustomerPassword(String uniqueId, String newPassword) {
+        Optional<CustomerTmp> customerTmpRepoById = customerTmpRepo.findById(uniqueId);
+        if (customerTmpRepoById.isPresent()) {
+            Customer customer = customerTmpRepoById.get().getCustomer();
+            customer.setPassword(passwordEncoder.encode(newPassword));
+            customerRepo.save(customer);
+            customerTmpRepo.delete(customerTmpRepoById.get());
+            return ResponseEntity.ok().body("New password set successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Something went wrong :(");
+        }
     }
 }
