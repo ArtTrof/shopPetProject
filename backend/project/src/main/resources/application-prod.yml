@@ -33,4 +33,6 @@ spring:
     baseline-on-migrate: true
 server:
   port: 9090
+mail:
+  debug: true
 frontend_url: localhost:8080
