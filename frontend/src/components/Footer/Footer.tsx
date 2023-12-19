@@ -8,7 +8,7 @@ export default () => {
 
     return (
         <div className='bg-black h-7'>
-            <div className="flex mx-auto grow max-w-screen-2xl justify-between">
+            <div className="flex mx-auto grow max-w-screen-2xl justify-between container mx-auto">
                 <div className='p-0 h-max'>
                 <IconButton component={Link} href="https://github.com" className='p-0 h-5'>
                         <GitHubIcon className='text-xs opacity-50 text-white hover:text-sky-500 hover:opacity-100' /> {/* Customize icon size */}

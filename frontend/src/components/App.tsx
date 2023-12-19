@@ -8,7 +8,7 @@ export default () =>  {
     <>
       <ContactUsWidget />
       <Header />
-      <div className="flex grow justify-center">
+      <div className="flex grow justify-center container mx-auto">
         <div className="flex flex-col grow max-w-screen-2xl">
           <div className="flex items-center" >
             navigation

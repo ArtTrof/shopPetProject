@@ -18,7 +18,7 @@ export default () => {
 
     return (
         <div className='w-full shadow-md'>
-            <div className="flex items-center max-w-screen-2xl justify-between mx-auto h-16">
+            <div className="flex items-center max-w-screen-2xl justify-between mx-auto h-16  container mx-auto">
                 <div className='flex items-center'>
                     <img
                         onClick={() => {

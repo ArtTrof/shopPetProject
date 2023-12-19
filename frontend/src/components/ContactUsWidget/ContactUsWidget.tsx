@@ -8,7 +8,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 export default () => {
     return (
         <div className="w-full bg-black h-8">
-            <div className='flex mx-auto max-w-screen-2xl items-center justify-between'>
+            <div className='flex mx-auto max-w-screen-2xl items-center justify-between  container mx-auto'>
                 <Box display="flex" alignItems="center">
                     <Typography component="div" className='fwhitespace-nowrap text-white overflow-hidden text-ellipsis text-base italic'>
                         One kebab please
